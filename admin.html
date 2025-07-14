@@ -1,81 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Panel</title>
+  <meta charset="UTF-8" />
+  <title>SAF Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
   <style>
-    body {
-      background: #f0f4f8;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .admin-box {
-      background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 400px;
-    }
-
-    .admin-box h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    .admin-box input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-
-    .admin-box button {
-      width: 100%;
-      padding: 10px;
-      background-color: #2196F3;
-      border: none;
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .admin-box button:hover {
-      background-color: #1976D2;
-    }
+    body { font-family: 'Noto Sans Bengali', sans-serif; padding: 20px; background: #f0f0f0; }
+    input, button { padding: 8px; font-size: 16px; margin: 5px; }
+    label { display: block; margin-top: 10px; }
   </style>
 </head>
 <body>
-  <div class="admin-box">
-    <h2>Admin Panel</h2>
-    <form id="dataForm">
-      <input type="text" id="dataInput" placeholder="নতুন তথ্য লিখুন">
-      <button type="submit">Save</button>
-    </form>
-  </div>
+  <h2>সোতারপাড় ফাউন্ডেশন - তথ্য ইনপুট</h2>
+  <label>বছর শুরু: <input type="text" id="startYear"></label>
+  <label>বছর শেষ: <input type="text" id="endYear"></label>
+  <label>মোট সঞ্চয় (৳): <input type="number" id="totalSavings"></label>
+  <label>মোট বিনিয়োগ (৳): <input type="number" id="totalInvestment"></label>
+  <button onclick="submitData()">সংরক্ষণ করুন</button>
 
   <script>
-    if (localStorage.getItem("loggedIn") !== "true") {
-      window.location.href = "login.html";
-    }
+    function submitData() {
+      const startYear = document.getElementById("startYear").value;
+      const endYear = document.getElementById("endYear").value;
+      const totalSavings = parseFloat(document.getElementById("totalSavings").value);
+      const totalInvestment = parseFloat(document.getElementById("totalInvestment").value);
+      const remaining = totalSavings - totalInvestment;
 
-    document.getElementById("dataForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const newData = document.getElementById("dataInput").value;
-      let existingData = JSON.parse(localStorage.getItem("publicData")) || [];
-      existingData.push(newData);
-      localStorage.setItem("publicData", JSON.stringify(existingData));
-      alert("তথ্য সংরক্ষণ হয়েছে!");
-      document.getElementById("dataInput").value = "";
-    });
+      fetch("https://script.google.com/macros/s/AKfycbxkjrAhfpLfrxA3pbYVUmtRI7qqRL0z2R-pco7DtvvRvYhB7DPpl9KQq4qAqtzF9tdc/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          StartYear: startYear,
+          EndYear: endYear,
+          TotalSavings: totalSavings,
+          TotalInvestment: totalInvestment,
+          Remaining: remaining
+        })
+      })
+      .then(res => res.text())
+      .then(data => {
+        alert("✅ ডেটা সংরক্ষণ সফল হয়েছে!");
+        document.getElementById("startYear").value = "";
+        document.getElementById("endYear").value = "";
+        document.getElementById("totalSavings").value = "";
+        document.getElementById("totalInvestment").value = "";
+      })
+      .catch(err => alert("❌ সমস্যা হয়েছে: " + err));
+    }
   </script>
 </body>
 </html>
