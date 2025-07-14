@@ -1,66 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <title>তথ্য তালিকা</title>
+  <title>SAF তথ্য তালিকা</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
   <style>
-    body {
-      background: #f0f4f8;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    li {
-      background-color: #e3f2fd;
-      padding: 10px 15px;
-      margin: 10px 0;
-      border-left: 4px solid #2196F3;
-      border-radius: 5px;
-    }
+    body { font-family: 'Noto Sans Bengali', sans-serif; padding: 20px; background: #fff; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background-color: #007B5E; color: white; }
+    tr:nth-child(even) { background-color: #f2f2f2; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>তথ্য তালিকা</h2>
-    <ul id="dataList"></ul>
-  </div>
+  <h2>সোতারপাড় ফাউন্ডেশন - বার্ষিক হিসাব তালিকা</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>বছর শুরু</th>
+        <th>বছর শেষ</th>
+        <th>মোট সঞ্চয়</th>
+        <th>মোট বিনিয়োগ</th>
+        <th>অবশিষ্ট</th>
+      </tr>
+    </thead>
+    <tbody id="dataBody"></tbody>
+  </table>
 
   <script>
-    const data = JSON.parse(localStorage.getItem("publicData")) || [];
-    const list = document.getElementById("dataList");
-
-    if (data.length === 0) {
-      const li = document.createElement("li");
-      li.innerText = "কোনো তথ্য পাওয়া যায়নি।";
-      list.appendChild(li);
-    } else {
-      data.forEach(item => {
-        const li = document.createElement("li");
-        li.innerText = item;
-        list.appendChild(li);
-      });
-    }
+    fetch("https://script.google.com/macros/s/AKfycbxkjrAhfpLfrxA3pbYVUmtRI7qqRL0z2R-pco7DtvvRvYhB7DPpl9KQq4qAqtzF9tdc/exec")
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById("dataBody");
+        data.forEach(row => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${row.StartYear}</td>
+            <td>${row.EndYear}</td>
+            <td>${row.TotalSavings}</td>
+            <td>${row.TotalInvestment}</td>
+            <td>${row.Remaining}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => alert("ডেটা লোড করতে সমস্যা হয়েছে: " + err));
   </script>
 </body>
 </html>
