@@ -1,20 +1,12 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <title>SAF তথ্য তালিকা</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Noto Sans Bengali', sans-serif; padding: 20px; background: #fff; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
-    th { background-color: #007B5E; color: white; }
-    tr:nth-child(even) { background-color: #f2f2f2; }
-  </style>
+  <meta charset="UTF-8" />
+  <title>SAF Data Viewer</title>
 </head>
 <body>
-  <h2>সোতারপাড় ফাউন্ডেশন - বার্ষিক হিসাব তালিকা</h2>
-  <table>
+  <h2>SAF - সঞ্চয় তালিকা</h2>
+  <table border="1" cellpadding="10">
     <thead>
       <tr>
         <th>বছর শুরু</th>
@@ -44,7 +36,8 @@
           tbody.appendChild(tr);
         });
       })
-      .catch(err => alert("ডেটা লোড করতে সমস্যা হয়েছে: " + err));
+      .catch(err => alert("ডেটা আনতে সমস্যা হয়েছে: " + err));
   </script>
 </body>
 </html>
+
