@@ -147,6 +147,8 @@
     <a href="income and expense.html">আয় এবং ব্যয় </a>
     <a href="notice.html">নোটিশ</a>
     <a href="contact.html">যোগাযোগ</a>
+    <a href="#" onclick="logout()">লগআউট</a>
+
   </nav>
   <main>
     
@@ -171,6 +173,14 @@
 <button class="calculateBtn" onclick="calculateAndSave()">হিসাব করুন ও সংরক্ষণ করুন</button>
 
 <script>
+  // যদি লগইন না করা থাকে, তাহলে login.html-এ পাঠিয়ে দাও
+  if (!localStorage.getItem("loggedIn")) {
+    window.location.href = "login.html";
+  }
+   function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+  }
   // লোকাল স্টোরেজ কী
   const STORAGE_KEY = "sanchayData";
 
@@ -235,7 +245,7 @@
       addRow(); // যদি ডাটা না থাকে তাহলে একটুও তৈরি কর
     }
   }
-
+  
   window.onload = loadData;
 </script>
 <footer>
